@@ -1,18 +1,17 @@
 import time
 import sys
-import random
 
 import pygame
 
 from consts import Colors
 from snake import Snake
 from flora import Flora
+from vector import Vector
 
 class Game:
 
     def __init__(self, width=50, height=50, block_size=10):
-        self.width = width
-        self.height = height
+        self.geometry = Vector(width, height)
         self.block_size = block_size
         self.score = 0
 
@@ -28,9 +27,8 @@ class Game:
             raise RuntimeError("pygame.init failed")
     
         self.surface = pygame.display.set_mode(
-            (self.width*self.block_size, self.height*self.block_size)
+            (self.geometry * self.block_size).point
         )
-
 
     def run(self):
         # helps us set the pace
@@ -74,15 +72,11 @@ class Game:
         pygame.quit()
         sys.exit()
 
-    def random_position(self):
-        return (
-            random.randrange(0, self.width-1),
-            random.randrange(0, self.height-1),
-        )
+    def random_vector(self):
+        return Vector.random(self.geometry)
 
-    def within_limits(self, position):
-        x, y = position
-        return (x > 0 and x < self.width and y > 0 and y < self.height) 
+    def within_limits(self, xyVector):
+        return xyVector.within(self.geometry)
 
     def is_food_here(self, position):
         return self.flora.is_food_here(position)

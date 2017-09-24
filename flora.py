@@ -12,21 +12,21 @@ class Flora(object):
 
     def generate_food(self, quantity=1):
         for _ in range(quantity):
-            food = Food(*self.game.random_position(), self._random_color())
+            food = Food(self.game.random_vector(), self._random_color())
             self.food_list[food.position] = food
 
-    def remove_food(self, position):
-        food = self.food_list.get(position)
-        if food != None:
+    def remove_food(self, xyVector):
+        food = self.food_list.get(xyVector)
+        if food is not None:
             del self.food_list[food.position]
         return food
 
-    def is_food_here(self, position):
-        return position in self.food_list
+    def is_food_here(self, xyVector):
+        return xyVector in self.food_list
 
     def draw(self):
         for food in self.food_list.values():
-            food.draw(self.game.surface, self.game.block_size)
+            food.draw(self.game)
 
     def _random_color(self):
         return random.choice([Colors.BROWN, Colors.CHOCOLATE])

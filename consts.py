@@ -1,5 +1,7 @@
 import pygame
 
+from vector import Vector
+
 # colors
 class Colors:
     BLACK = pygame.Color(0, 0, 0)       # background
@@ -35,10 +37,10 @@ class Directions:
     }
 
     DELTA_MOVEMENT = {
-        UP: [0, -1],
-        RIGHT: [1, 0],
-        DOWN: [0, 1],
-        LEFT: [-1, 0],
+        UP: Vector(0,-1),
+        RIGHT: Vector(1, 0),
+        DOWN: Vector(0, 1),
+        LEFT: Vector(-1, 0),
     }
 
 # pygame event keys to movement

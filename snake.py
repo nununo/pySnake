@@ -13,7 +13,7 @@ class Snake(object):
         self.direction = Directions.RIGHT
     
     def _come_to_life(self):
-        self.body.append(self.game.random_position())
+        self.body.append(self.game.random_vector())
 
     def turn(self, direction):
         if direction == Directions.OPPOSITE[self.direction]:
@@ -23,9 +23,7 @@ class Snake(object):
         self.direction = direction
 
     def move(self):
-        x = self.body[0][0] + Directions.DELTA_MOVEMENT[self.direction][0]
-        y = self.body[0][1] + Directions.DELTA_MOVEMENT[self.direction][1]
-        head_position = (x, y)
+        head_position = self.body[0] + Directions.DELTA_MOVEMENT[self.direction]
 
         self.is_alive = self.game.within_limits(head_position)
 
@@ -42,10 +40,13 @@ class Snake(object):
         return self.body[0]
 
     def draw(self):
-        block_size = self.game.block_size
         for block in self.body:
             pygame.draw.rect(
                 self.game.surface,
                 self.color,
-                pygame.Rect(block[0], block[1], block_size, block_size),
+                pygame.Rect(
+                    *self.game.block_2_screen_position(block),
+                    self.game.block_size, 
+                    self.game.block_size
+                ),
             )
