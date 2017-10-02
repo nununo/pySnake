@@ -3,7 +3,7 @@ import sys
 
 import pygame
 
-from consts import Colors
+from consts import Colors, Keyboard
 from snake import Snake
 from flora import Flora
 from vector import Vector
@@ -30,16 +30,45 @@ class Game:
             (self.geometry * self.block_size).point
         )
 
+    def handle_input(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                # handle window close
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    # make it the same as "window close"
+                    pygame.event.post(pygame.event.Event(pygame.QUIT))
+                elif event.key in Keyboard.DIRECTION_KEYS:
+                    self.snake.turn(Keyboard.DIRECTION_KEYS[event.key])
+
+    def process_collisions(self):
+        if not self.within_limits(self.snake.head):
+            self.snake.die()
+            return
+
+        if self.snake.self_collide():
+            self.snake.die()
+            return
+
+        if self.flora.is_food_here(self.snake.head):
+            self.snake.eat()
+            self.flora.remove_food(self.snake.head)
+
     def run(self):
         # helps us set the pace
         fps_controller = pygame.time.Clock()  
 
         while True:
+            self.handle_input()
+
             self.snake.move()
-            self.flora.draw()
-            self.snake.draw()
+            self.process_collisions()
+
+            self.draw()
             pygame.display.flip()
-            fps_controller.tick(20)
+            fps_controller.tick(10)
 
             if not self.snake.is_alive:
                 break
@@ -78,9 +107,10 @@ class Game:
     def within_limits(self, xyVector):
         return xyVector.within(self.geometry)
 
-    def is_food_here(self, position):
-        return self.flora.is_food_here(position)
+    def _draw_background(self):
+        self.surface.fill(Colors.BLACK)
 
     def draw(self):
+        self._draw_background()
         self.flora.draw()
         self.snake.draw()

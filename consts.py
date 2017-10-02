@@ -43,15 +43,11 @@ class Directions:
         LEFT: Vector(-1, 0),
     }
 
-# pygame event keys to movement
-EVENT_KEY_DIRECTIONS = {
-    pygame.K_UP: Directions.UP,
-    pygame.K_DOWN: Directions.DOWN,
-    pygame.K_LEFT: Directions.LEFT,
-    pygame.K_RIGHT: Directions.RIGHT,
-    ord('w'): Directions.UP,
-    ord('s'): Directions.DOWN,
-    ord('a'): Directions.LEFT,
-    ord('d'): Directions.RIGHT,
 
-}
+class Keyboard:
+    DIRECTION_KEYS = {
+        pygame.K_UP: Directions.UP,
+        pygame.K_DOWN: Directions.DOWN,
+        pygame.K_LEFT: Directions.LEFT,
+        pygame.K_RIGHT: Directions.RIGHT,
+    }
