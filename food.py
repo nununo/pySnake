@@ -1,5 +1,3 @@
-import pygame
-
 class Food(object):
 
     def __init__(self, xyVector, color):
@@ -7,12 +5,4 @@ class Food(object):
         self.color = color
     
     def draw(self, game):
-        pygame.draw.rect(
-            game.surface, 
-            self.color,
-            pygame.Rect(
-                *((self.position * game.block_size).point),
-                game.block_size,
-                game.block_size
-            ),
-        )
+        game.draw_cell(*self.position.point, self.color)

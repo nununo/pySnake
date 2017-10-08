@@ -7,6 +7,8 @@ from consts import Colors, Keyboard
 from snake import Snake
 from flora import Flora
 from vector import Vector
+from draw_pygame import Drawer
+
 
 class Game:
 
@@ -15,20 +17,9 @@ class Game:
         self.block_size = block_size
         self.score = 0
 
-        self.init_pygame()
-
+        self.drawer = Drawer(width, height, block_size)
         self.snake = Snake(self)
         self.flora = Flora(self)
-
-    def init_pygame(self):
-        _, numfail = pygame.init()
-
-        if numfail:
-            raise RuntimeError("pygame.init failed")
-    
-        self.surface = pygame.display.set_mode(
-            (self.geometry * self.block_size).point
-        )
 
     def handle_input(self):
         for event in pygame.event.get():
@@ -67,7 +58,7 @@ class Game:
             self.process_collisions()
 
             self.draw()
-            pygame.display.flip()
+            self.drawer.flip_display()
             fps_controller.tick(10)
 
             if not self.snake.is_alive:
@@ -107,10 +98,10 @@ class Game:
     def within_limits(self, xyVector):
         return xyVector.within(self.geometry)
 
-    def _draw_background(self):
-        self.surface.fill(Colors.BLACK)
+    def draw_cell(self, x, y, color):
+        self.drawer.draw_cell(x, y, color)
 
     def draw(self):
-        self._draw_background()
+        self.drawer.draw_background()
         self.flora.draw()
         self.snake.draw()
