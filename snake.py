@@ -1,5 +1,3 @@
-import pygame
-
 from consts import Directions, Colors
 
 class Snake(object):
@@ -21,6 +19,9 @@ class Snake(object):
     def head(self):
         return self.body[0]
 
+    def __len__(self):
+        return len(self.body)
+
     def die(self):
         self._is_alive = False
 
@@ -41,7 +42,7 @@ class Snake(object):
         self.direction = direction
 
     def move(self):
-        head_position = self.body[0] + Directions.DELTA_MOVEMENT[self.direction]
+        head_position = self.head + Directions.DELTA_MOVEMENT[self.direction]
         self.body.insert(0, head_position)
         if not self._just_ate:
             self.body.pop()
@@ -50,12 +51,4 @@ class Snake(object):
 
     def draw(self):
         for block in self.body:
-            pygame.draw.rect(
-                self.game.surface,
-                self.color,
-                pygame.Rect(
-                    *((block * self.game.block_size).point),
-                    self.game.block_size, 
-                    self.game.block_size
-                ),
-            )
+            self.game.draw_cell(*block.point, self.color)
