@@ -7,10 +7,9 @@ class VectorTests(unittest.TestCase):
 
     def setUp(self):
         self.v = Vector(4, 2)
-    
+
     def tearDown(self):
         del self.v
-
 
     def test_point_property(self):
         point = self.v.point

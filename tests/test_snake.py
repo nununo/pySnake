@@ -1,7 +1,6 @@
 import unittest
 
 from snake import Snake
-from vector import Vector
 from consts import Directions
 from .fake_game import FakeGame
 
